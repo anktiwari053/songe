@@ -3,7 +3,7 @@
  * Common functions for API calls and authentication
  */
 
-const API_BASE_URL = 'http://localhost:3000/api';
+const API_BASE_URL = 'https://songe-app.onrender.com';
 
 // Get token from localStorage
 function getToken() {
