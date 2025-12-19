@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login - Music App</title>
+  <link rel="stylesheet" href="css/admin.css">
+  <style>
+    .login-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .login-card {
+      background: white;
+      border-radius: 15px;
+      padding: 3rem;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .login-card h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 2rem;
+      font-size: 2rem;
+    }
+
+    .btn-block {
+      width: 100%;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-card">
+      <h1>Admin Login</h1>
+      <div id="alertContainer"></div>
+      
+      <form id="loginForm">
+        <div class="form-group">
+          <label class="form-label" for="email">Email</label>
+          <input type="email" 
+                 id="email" 
+                 class="form-input" 
+                 placeholder="Enter admin email" 
+                 required>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <input type="password" 
+                 id="password" 
+                 class="form-input" 
+                 placeholder="Enter password" 
+                 required>
+        </div>
+        
+        <button type="submit" class="btn btn-primary btn-block">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/admin-utils.js"></script>
+  <script>
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', () => {
+      // Redirect if already logged in
+      if (isAuthenticated()) {
+        window.location.href = 'index.html';
+      }
+
+      // Handle form submission
+      document.getElementById('loginForm').addEventListener('submit', handleLogin);
+    });
+
+    // Handle login
+    async function handleLogin(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const alertContainer = document.getElementById('alertContainer');
+
+      // Show loading
+      alertContainer.innerHTML = '<div class="alert">Logging in...</div>';
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/auth/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || 'Login failed');
+        }
+
+        // Check if user is admin
+        if (data.user.role !== 'admin') {
+          throw new Error('Access denied. Admin only.');
+        }
+
+        // Save token and user
+        saveToken(data.token);
+        saveUser(data.user);
+
+        // Show success
+        alertContainer.innerHTML = '<div class="alert alert-success">Login successful! Redirecting...</div>';
+
+        // Redirect to dashboard
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 1000);
+      } catch (error) {
+        alertContainer.innerHTML = `<div class="alert alert-error">${error.message}</div>`;
+      }
+    }
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,75 @@
+/**
+ * Profile Page Styles
+ */
+
+.page-title {
+  color: white;
+  text-align: center;
+  margin: 2rem 0;
+  font-size: 2.5rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.profile-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.profile-card {
+  background: white;
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.profile-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.profile-avatar {
+  font-size: 5rem;
+  margin-bottom: 1rem;
+}
+
+.profile-header h2 {
+  color: #333;
+  font-size: 2rem;
+}
+
+.profile-info {
+  margin-bottom: 2rem;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  background: #f8f9fa;
+  border-radius: 5px;
+}
+
+.info-label {
+  font-weight: 600;
+  color: #666;
+}
+
+.info-value {
+  color: #333;
+  font-weight: 500;
+}
+
+.profile-actions {
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .info-item {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
