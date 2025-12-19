@@ -26,11 +26,12 @@ app.use(express.static(path.join(__dirname, 'frontend')));
 app.use('/admin', express.static(path.join(__dirname, 'admin')));
 
 // Routes
-app.use('/api/auth', require('./backend/routes/authRoutes'));
-app.use('/api/songs', require('./backend/routes/songRoutes'));
-app.use('/api/favorites', require('./backend/routes/favoriteRoutes'));
-app.use('/api/profile', require('./backend/routes/profileRoutes'));
-app.use('/api/admin', require('./backend/routes/adminRoutes'));
+app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/songs', require('./routes/songRoutes'));
+app.use('/api/favorites', require('./routes/favoriteRoutes'));
+app.use('/api/profile', require('./routes/profileRoutes'));
+app.use('/api/admin', require('./routes/adminRoutes'));
+
 
 // MongoDB Connection
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/musicapp';
