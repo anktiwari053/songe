@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home - Music App</title>
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/home.css">
+</head>
+<body>
+  <div class="container">
+    <h1 class="page-title">All Songs</h1>
+    
+    <!-- Music Player -->
+    <div class="music-player" id="musicPlayer" style="display: none;">
+      <div class="player-info">
+        <img id="playerCover" src="" alt="Cover" class="player-cover">
+        <div class="player-details">
+          <h3 id="playerTitle">Song Title</h3>
+          <p id="playerArtist">Artist Name</p>
+        </div>
+      </div>
+      <audio id="audioPlayer" controls></audio>
+      <div class="player-controls">
+        <button class="btn btn-secondary" id="prevBtn">⏮ Previous</button>
+        <button class="btn btn-primary" id="playPauseBtn">▶ Play</button>
+        <button class="btn btn-secondary" id="nextBtn">Next ⏭</button>
+      </div>
+    </div>
+
+    <!-- Songs List -->
+    <div id="songsContainer" class="songs-container">
+      <div class="loading">
+        <div class="spinner"></div>
+        <p>Loading songs...</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/utils.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>
+

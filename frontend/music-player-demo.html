@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Animated Music Player</title>
+  <style>
+    /**
+     * Enhanced Music Player Styles
+     * Modern UI with smooth animations
+     */
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      transition: background 1s ease-in-out;
+      padding: 2rem;
+    }
+
+    /* Animated background when playing */
+    body.playing {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #4facfe 100%);
+      animation: backgroundPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes backgroundPulse {
+      0%, 100% {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #4facfe 100%);
+      }
+      50% {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 50%, #f093fb 100%);
+      }
+    }
+
+    /* Music Player Container */
+    .music-player-container {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 2.5rem;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      max-width: 400px;
+      width: 100%;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Glow effect when playing */
+    .music-player-container.playing {
+      box-shadow: 0 0 30px rgba(102, 126, 234, 0.6),
+                  0 0 60px rgba(102, 126, 234, 0.4),
+                  0 10px 40px rgba(0, 0, 0, 0.3);
+      animation: playerGlow 2s ease-in-out infinite;
+    }
+
+    @keyframes playerGlow {
+      0%, 100% {
+        box-shadow: 0 0 30px rgba(102, 126, 234, 0.6),
+                    0 0 60px rgba(102, 126, 234, 0.4),
+                    0 10px 40px rgba(0, 0, 0, 0.3);
+      }
+      50% {
+        box-shadow: 0 0 40px rgba(102, 126, 234, 0.8),
+                    0 0 80px rgba(102, 126, 234, 0.6),
+                    0 10px 40px rgba(0, 0, 0, 0.3);
+      }
+    }
+
+    /* Pulse animation for container */
+    .music-player-container.pulse {
+      animation: containerPulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes containerPulse {
+      0%, 100% {
+      transform: scale(1);
+      }
+      50% {
+        transform: scale(1.02);
+      }
+    }
+
+    /* Song Info */
+    .song-info {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .song-cover {
+      width: 200px;
+      height: 200px;
+      border-radius: 15px;
+      object-fit: cover;
+      margin: 0 auto 1.5rem;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease;
+    }
+
+    .music-player-container.playing .song-cover {
+      animation: coverRotate 20s linear infinite;
+    }
+
+    @keyframes coverRotate {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .song-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 0.5rem;
+    }
+
+    .song-artist {
+      font-size: 1rem;
+      color: #666;
+      margin-bottom: 1rem;
+    }
+
+    /* Now Playing Text */
+    .now-playing {
+      font-size: 0.9rem;
+      color: #667eea;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: all 0.5s ease;
+      margin-bottom: 1rem;
+    }
+
+    .now-playing.show {
+      opacity: 1;
+      transform: translateY(0);
+      animation: textSlide 2s ease-in-out infinite;
+    }
+
+    @keyframes textSlide {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-5px);
+      }
+    }
+
+    /* Audio Controls */
+    .audio-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .audio-element {
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+
+    /* Play Button */
+    .play-button {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .play-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    }
+
+    .play-button:active {
+      transform: translateY(0);
+    }
+
+    .play-button.playing {
+      background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
+      animation: buttonPulse 1s ease-in-out infinite;
+    }
+
+    @keyframes buttonPulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+    }
+
+    /* Progress Bar */
+    .progress-container {
+      width: 100%;
+      height: 6px;
+      background: #e0e0e0;
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 1rem;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+      width: 0%;
+      transition: width 0.1s linear;
+      border-radius: 3px;
+    }
+
+    .music-player-container.playing .progress-bar {
+      animation: progressGlow 2s ease-in-out infinite;
+    }
+
+    @keyframes progressGlow {
+      0%, 100% {
+        box-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
+      }
+      50% {
+        box-shadow: 0 0 15px rgba(102, 126, 234, 0.8);
+      }
+    }
+
+    /* Time Display */
+    .time-display {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 0.5rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .music-player-container {
+        padding: 1.5rem;
+      }
+
+      .song-cover {
+        width: 150px;
+        height: 150px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="music-player-container" id="playerContainer">
+    <div class="song-info">
+      <img src="https://via.placeholder.com/200/667eea/ffffff?text=Music" 
+           alt="Song Cover" 
+           class="song-cover" 
+           id="songCover">
+      <div class="now-playing" id="nowPlaying">Now Playing</div>
+      <div class="song-title" id="songTitle">Sample Song</div>
+      <div class="song-artist" id="songArtist">Sample Artist</div>
+    </div>
+
+    <div class="audio-controls">
+      <audio id="audioPlayer" class="audio-element" preload="metadata">
+        <!-- Replace with your audio file URL -->
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio>
+
+      <button class="play-button" id="playButton">▶ Play</button>
+
+      <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+
+      <div class="time-display">
+        <span id="currentTime">0:00</span>
+        <span id="duration">0:00</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /**
+     * Enhanced Music Player with Animations
+     * Pure JavaScript implementation
+     */
+
+    // Get DOM elements
+    const audioPlayer = document.getElementById('audioPlayer');
+    const playButton = document.getElementById('playButton');
+    const playerContainer = document.getElementById('playerContainer');
+    const nowPlaying = document.getElementById('nowPlaying');
+    const progressBar = document.getElementById('progressBar');
+    const currentTimeDisplay = document.getElementById('currentTime');
+    const durationDisplay = document.getElementById('duration');
+    const body = document.body;
+
+    // State
+    let isPlaying = false;
+
+    /**
+     * Format time from seconds to MM:SS
+     */
+    function formatTime(seconds) {
+      if (!seconds || isNaN(seconds)) return '0:00';
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    /**
+     * Update progress bar
+     */
+    function updateProgress() {
+      if (audioPlayer.duration) {
+        const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+        progressBar.style.width = progress + '%';
+        currentTimeDisplay.textContent = formatTime(audioPlayer.currentTime);
+      }
+    }
+
+    /**
+     * Update duration display
+     */
+    function updateDuration() {
+      durationDisplay.textContent = formatTime(audioPlayer.duration);
+    }
+
+    /**
+     * Trigger vibration on mobile devices (if supported)
+     */
+    function triggerVibration() {
+      if ('vibrate' in navigator) {
+        // Soft vibration pattern: vibrate for 100ms
+        navigator.vibrate(100);
+      }
+    }
+
+    /**
+     * Start playing animations
+     */
+    function startAnimations() {
+      // Add playing class to body for background animation
+      body.classList.add('playing');
+
+      // Add playing class to container for glow effect
+      playerContainer.classList.add('playing');
+      playerContainer.classList.add('pulse');
+
+      // Show and animate "Now Playing" text
+      nowPlaying.classList.add('show');
+
+      // Update button
+      playButton.classList.add('playing');
+      playButton.textContent = '⏸ Pause';
+
+      // Trigger vibration
+      triggerVibration();
+    }
+
+    /**
+     * Stop all animations
+     */
+    function stopAnimations() {
+      // Remove playing class from body
+      body.classList.remove('playing');
+
+      // Remove playing class from container
+      playerContainer.classList.remove('playing');
+      playerContainer.classList.remove('pulse');
+
+      // Hide "Now Playing" text
+      nowPlaying.classList.remove('show');
+
+      // Update button
+      playButton.classList.remove('playing');
+      playButton.textContent = '▶ Play';
+    }
+
+    /**
+     * Toggle play/pause
+     */
+    function togglePlayPause() {
+      if (isPlaying) {
+        // Pause
+        audioPlayer.pause();
+        isPlaying = false;
+        stopAnimations();
+      } else {
+        // Play
+        audioPlayer.play();
+        isPlaying = true;
+        startAnimations();
+      }
+    }
+
+    /**
+     * Handle audio play event
+     */
+    audioPlayer.addEventListener('play', () => {
+      isPlaying = true;
+      startAnimations();
+    });
+
+    /**
+     * Handle audio pause event
+     */
+    audioPlayer.addEventListener('pause', () => {
+      isPlaying = false;
+      stopAnimations();
+    });
+
+    /**
+     * Handle audio end event
+     */
+    audioPlayer.addEventListener('ended', () => {
+      isPlaying = false;
+      stopAnimations();
+      audioPlayer.currentTime = 0;
+      progressBar.style.width = '0%';
+      currentTimeDisplay.textContent = '0:00';
+    });
+
+    /**
+     * Handle time update for progress bar
+     */
+    audioPlayer.addEventListener('timeupdate', updateProgress);
+
+    /**
+     * Handle loaded metadata
+     */
+    audioPlayer.addEventListener('loadedmetadata', updateDuration);
+
+    /**
+     * Handle play button click
+     */
+    playButton.addEventListener('click', togglePlayPause);
+
+    /**
+     * Handle progress bar click (seek)
+     */
+    document.querySelector('.progress-container').addEventListener('click', (e) => {
+      const progressContainer = e.currentTarget;
+      const clickX = e.offsetX;
+      const width = progressContainer.offsetWidth;
+      const percentage = clickX / width;
+      
+      if (audioPlayer.duration) {
+        audioPlayer.currentTime = percentage * audioPlayer.duration;
+      }
+    });
+
+    /**
+     * Initialize on page load
+     */
+    window.addEventListener('load', () => {
+      updateDuration();
+      console.log('Music Player Ready!');
+      console.log('Click Play to start the animations!');
+    });
+  </script>
+</body>
+</html>
+
